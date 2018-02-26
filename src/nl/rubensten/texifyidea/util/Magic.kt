@@ -22,7 +22,7 @@ object Magic {
      */
     object General {
 
-        @JvmField val pathPackageRoot = "/nl/rubensten/texifyidea"
+        const val pathPackageRoot = "/nl/rubensten/texifyidea"
         @JvmField val emptyStringArray = arrayOfNulls<String>(0)
         @JvmField val emptyPsiElementArray = arrayOfNulls<PsiElement>(0)
         @JvmField val noQuickFix: LocalQuickFix? = null
@@ -97,7 +97,8 @@ object Magic {
          */
         @JvmField val reference = setOf(
                 "\\ref", "\\cite", "\\eqref", "\\nameref", "\\autoref",
-                "\\fullref", "\\pageref", "\\cref", "\\Cref"
+                "\\fullref", "\\pageref", "\\vref", "\\Autoref", "\\cref",
+                "\\labelcref", "\\cpageref", "\\Cref"
         )
 
         /**
@@ -138,6 +139,11 @@ object Magic {
          * All commands that end if.
          */
         @JvmField val endIfs = setOf("\\fi")
+
+        /**
+         * All commands that at first glance look like \if-esque commands, but that actually aren't.
+         */
+        @JvmField val ignoredIfs = setOf("\\newif", "\\iff")
 
         /**
          * List of all TeX style primitives.

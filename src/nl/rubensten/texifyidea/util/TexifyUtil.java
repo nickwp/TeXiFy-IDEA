@@ -496,7 +496,7 @@ public class TexifyUtil {
     public static Set<String> findLabelsInFileSet(@NotNull PsiFile file) {
         // LaTeX
         Set<String> labels = LatexCommandsIndex.Companion.getItemsInFileSet(file).stream()
-                .filter(cmd -> cmd.getName().equals("\\label") || cmd.getName().equals("\\bibitem"))
+                .filter(cmd -> "\\label".equals(cmd.getName()) || "\\bibitem".equals(cmd.getName()))
                 .map(LatexCommands::getRequiredParameters)
                 .filter(list -> !list.isEmpty())
                 .map(list -> list.get(0))
@@ -576,10 +576,10 @@ public class TexifyUtil {
                         List<String> p = ApplicationManager.getApplication().runReadAction(
                                 (Computable<List<String>>)cmd::getRequiredParameters
                         );
-                        return p.size() > 0 && p.get(0).equals(key);
+                        return p.size() > 0 && key != null && key.equals(p.get(0));
                     }
                     else if (c instanceof BibtexId) {
-                        return ((BibtexId)c).getName().equals(key);
+                        return key != null && key.equals(((BibtexId)c).getName());
                     }
 
                     return false;

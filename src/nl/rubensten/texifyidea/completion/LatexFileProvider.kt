@@ -14,9 +14,7 @@ import nl.rubensten.texifyidea.TexifyIcons
 import nl.rubensten.texifyidea.completion.handlers.CompositeHandler
 import nl.rubensten.texifyidea.completion.handlers.FileNameInsertionHandler
 import nl.rubensten.texifyidea.completion.handlers.LatexReferenceInsertHandler
-import nl.rubensten.texifyidea.util.Kindness
-import nl.rubensten.texifyidea.util.findRootFile
-import nl.rubensten.texifyidea.util.isLatexFile
+import nl.rubensten.texifyidea.util.*
 import java.util.*
 import java.util.regex.Pattern
 
@@ -45,8 +43,17 @@ class LatexFileProvider : CompletionProvider<CompletionParameters>() {
 
         // When the base directory is a sources directory => add items of all source directories.
         val rootManager = ProjectRootManager.getInstance(parameters.originalFile.project)
-        rootManager.contentSourceRoots
+        rootManager.contentSourceRoots.asSequence()
                 .filter { it != baseDirectory }
+                .toSet()
+                .forEach { addByDirectory(it, autocompleteText, result) }
+
+        // Add all included graphicspaths.
+        val graphicsPaths = parameters.originalFile.commandsInFileSet().filter { it.commandToken.text == "\\graphicspath" }
+        graphicsPaths.asSequence()
+                .mapNotNull { it.requiredParameter(0) }
+                .mapNotNull { it.println(); baseDirectory.findFileByRelativePath(it) }
+                .filter { it.isDirectory && it != baseDirectory }
                 .toSet()
                 .forEach { addByDirectory(it, autocompleteText, result) }
     }
@@ -125,13 +132,23 @@ class LatexFileProvider : CompletionProvider<CompletionParameters>() {
     }
 
     private fun processAutocompleteText(autocompleteText: String): String {
-        var result = if (autocompleteText.endsWith("}"))
+        var result = if (autocompleteText.endsWith("}")) {
             autocompleteText.substring(0, autocompleteText.length - 1)
-        else
-            autocompleteText
+        }
+        else autocompleteText
 
         if (result.endsWith(".")) {
             result = result.substring(0, result.length - 1) + "/"
+        }
+
+        // Prevent double ./
+        if (result.startsWith("./")) {
+            result = result.substring(2)
+        }
+
+        // Prevent double /
+        if (result.startsWith("/")) {
+            result = result.substring(1)
         }
 
         return result
