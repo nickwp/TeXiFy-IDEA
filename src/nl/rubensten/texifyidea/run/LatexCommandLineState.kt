@@ -59,42 +59,42 @@ open class LatexCommandLineState(environment: ExecutionEnvironment, private val 
         }
 
         // Open Sumatra after compilation & execute inverse search.
-        if (SumatraConversation.isAvailable) {
-            handler.addProcessListener(OpenSumatraListener(runConfig))
-
-            // Inverse search.
-            run {
-                val psiFile = runConfig.mainFile.psiFile(environment.project) ?: return@run
-                val document = psiFile.document() ?: return@run
-                val editor = psiFile.openedEditor() ?: return@run
-
-                if (document != editor.document) {
-                    return@run
-                }
-
-                // Do not do inverse search when editing the preamble.
-                if (psiFile.isRoot()) {
-                    val element = psiFile.findElementAt(editor.caretOffset()) ?: return@run
-                    val environment = element.parentOfType(LatexEnvironment::class) ?: return@run
-                    if (environment.name()?.text != "document") {
-                        return@run
-                    }
-                }
-
-                val line = document.getLineNumber(editor.caretOffset()) + 1
-
-                runAsync {
-                    try {
-                        // Wait for sumatra pdf to start. 1250ms should be plenty.
-                        // Otherwise the person is out of luck ¯\_(ツ)_/¯
-                        Thread.sleep(1250)
-                        SumatraConversation.forwardSearch(sourceFilePath = psiFile.virtualFile.path, line = line)
-                    }
-                    catch (ignored: TeXception) {
-                    }
-                }
-            }
-        }
+//        if (SumatraConversation.isAvailable) {
+//            handler.addProcessListener(OpenSumatraListener(runConfig))
+//
+//            // Inverse search.
+//            run {
+//                val psiFile = runConfig.mainFile.psiFile(environment.project) ?: return@run
+//                val document = psiFile.document() ?: return@run
+//                val editor = psiFile.openedEditor() ?: return@run
+//
+//                if (document != editor.document) {
+//                    return@run
+//                }
+//
+//                // Do not do inverse search when editing the preamble.
+//                if (psiFile.isRoot()) {
+//                    val element = psiFile.findElementAt(editor.caretOffset()) ?: return@run
+//                    val environment = element.parentOfType(LatexEnvironment::class) ?: return@run
+//                    if (environment.name()?.text != "document") {
+//                        return@run
+//                    }
+//                }
+//
+//                val line = document.getLineNumber(editor.caretOffset()) + 1
+//
+//                runAsync {
+//                    try {
+//                        // Wait for sumatra pdf to start. 1250ms should be plenty.
+//                        // Otherwise the person is out of luck ¯\_(ツ)_/¯
+//                        Thread.sleep(1250)
+//                        SumatraConversation.forwardSearch(sourceFilePath = psiFile.virtualFile.path, line = line)
+//                    }
+//                    catch (ignored: TeXception) {
+//                    }
+//                }
+//            }
+//        }
 
         return handler
     }

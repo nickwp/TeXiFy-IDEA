@@ -11,13 +11,13 @@ import nl.rubensten.texifyidea.TeXception
 class OpenSumatraListener(val runConfig: LatexRunConfiguration) : ProcessListener {
 
     override fun processTerminated(event: ProcessEvent) {
-        if (event.exitCode == 0 && SumatraConversation.isAvailable) {
-            try {
-                SumatraConversation.openFile(runConfig.outputFilePath, start = true)
-            }
-            catch (ignored: TeXception) {
-            }
-        }
+//        if (event.exitCode == 0 && SumatraConversation.isAvailable) {
+//            try {
+//                SumatraConversation.openFile(runConfig.outputFilePath, start = true)
+//            }
+//            catch (ignored: TeXception) {
+//            }
+//        }
     }
 
     override fun onTextAvailable(p0: ProcessEvent, p1: Key<*>) {

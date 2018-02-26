@@ -7,7 +7,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import nl.rubensten.texifyidea.TeXception
 import nl.rubensten.texifyidea.TexifyIcons
 import nl.rubensten.texifyidea.action.EditorAction
-import nl.rubensten.texifyidea.run.SumatraConversation
+//import nl.rubensten.texifyidea.run.SumatraConversation
 
 /**
  * Starts a forward search action in SumatraPDF.
@@ -24,22 +24,22 @@ open class ForwardSearchAction : EditorAction(
 ) {
 
     override fun actionPerformed(file: VirtualFile, project: Project, editor: TextEditor) {
-        if (!SumatraConversation.isAvailable) {
+//        if (!SumatraConversation.isAvailable) {
             return
-        }
-
-        val document = editor.editor.document
-        val line = document.getLineNumber(editor.editor.caretModel.offset) + 1
-
-        try {
-            SumatraConversation.forwardSearch(sourceFilePath = file.path, line = line)
-        }
-        catch (ignored: TeXception) {
-        }
+//        }
+//
+//        val document = editor.editor.document
+//        val line = document.getLineNumber(editor.editor.caretModel.offset) + 1
+//
+//        try {
+//            SumatraConversation.forwardSearch(sourceFilePath = file.path, line = line)
+//        }
+//        catch (ignored: TeXception) {
+//        }
     }
 
     override fun update(e: AnActionEvent?) {
-        val presentation = e?.presentation ?: return
-        presentation.isEnabledAndVisible = SumatraConversation.isAvailable
+//        val presentation = e?.presentation ?: return
+//        presentation.isEnabledAndVisible = SumatraConversation.isAvailable
     }
 }
