@@ -102,6 +102,13 @@ object Magic {
         )
 
         /**
+         * All commands that should come after non-breaking space (think \ref)
+         */
+        @JvmField val nonBreakingReference = setOf(
+                "\\ref", "\\cite", "\\vref"
+        )
+
+        /**
          * All math operators without a leading slash.
          */
         @JvmField val slashlessMathOperators = setOf(

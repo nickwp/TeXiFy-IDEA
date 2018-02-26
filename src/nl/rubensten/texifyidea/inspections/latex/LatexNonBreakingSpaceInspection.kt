@@ -36,7 +36,7 @@ open class LatexNonBreakingSpaceInspection : TexifyInspectionBase() {
 
         val commands = LatexCommandsIndex.getItems(file)
         for (cmd in commands) {
-            if (!Magic.Command.reference.contains(cmd.name)) {
+            if (!Magic.Command.nonBreakingReference.contains(cmd.name)) {
                 continue
             }
 
