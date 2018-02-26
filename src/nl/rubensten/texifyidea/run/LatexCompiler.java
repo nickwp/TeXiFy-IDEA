@@ -48,14 +48,14 @@ public enum LatexCompiler {
             command.add("-interaction=nonstopmode");
             command.add("-synctex=1");
             command.add("-output-format=" + runConfig.getOutputFormat().name().toLowerCase());
-            command.add("-output-directory=" + moduleRoot.getPath() + "/out");
+//            command.add("-output-directory=" + moduleRoot.getPath() + "/out");
 
             if (runConfig.hasAuxiliaryDirectories()) {
-                command.add("-aux-directory=" + moduleRoot.getPath() + "/auxil");
+//                command.add("-aux-directory=" + moduleRoot.getPath() + "/auxil");
             }
 
             for (VirtualFile root : moduleRoots) {
-                command.add("-include-directory=" + root.getPath());
+//                command.add("-include-directory=" + root.getPath());
             }
         }
 
