@@ -97,7 +97,7 @@ object Magic {
          */
         @JvmField val reference = setOf(
                 "\\ref", "\\cite", "\\eqref", "\\nameref", "\\autoref",
-                "\\fullref", "\\pageref"
+                "\\fullref", "\\pageref", "\\cref", "\\Cref"
         )
 
         /**

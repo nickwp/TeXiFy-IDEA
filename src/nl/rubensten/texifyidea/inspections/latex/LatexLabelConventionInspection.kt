@@ -139,7 +139,7 @@ open class LatexLabelConventionInspection : TexifyInspectionBase() {
         private fun findReferences(file: PsiFile, labelName: String): MutableList<LatexRequiredParam> {
             val resultList = ArrayList<LatexRequiredParam>()
 
-            val commands = file.commandsInFileSet().filter { it.name == "\\ref" || it.name == "\\cite" }.reversed()
+            val commands = file.commandsInFileSet().filter { it.name == "\\ref" || it.name == "\\cite" || it.name == "\\cref" || it.name == "\\Cref"}.reversed()
             for (ref in commands) {
                 val parameter = ref.firstChildOfType(LatexRequiredParam::class) ?: continue
                 val name = parameter.firstChildOfType(LatexNormalText::class)?.text ?: continue
