@@ -12,7 +12,7 @@ import nl.rubensten.texifyidea.util.toTextRange
  */
 open class BibtexQuoteInsertHandler : TypedHandlerDelegate() {
 
-    override fun charTyped(char: Char, project: Project?, editor: Editor, file: PsiFile): Result {
+    override fun charTyped(char: Char, project: Project, editor: Editor, file: PsiFile): Result {
         if (file.fileType != BibtexFileType) {
             return super.charTyped(char, project, editor, file)
         }
@@ -22,6 +22,10 @@ open class BibtexQuoteInsertHandler : TypedHandlerDelegate() {
         val offset = caret.offset
 
         if (char != '"' || document.textLength < offset + 1) {
+            return super.charTyped(char, project, editor, file)
+        }
+
+        if (offset < 0 || offset + 1 >= document.textLength) {
             return super.charTyped(char, project, editor, file)
         }
 

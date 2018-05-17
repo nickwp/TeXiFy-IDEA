@@ -105,7 +105,7 @@ fun Project.allFileinclusions(): Map<PsiFile, Set<PsiFile>> {
     for (command in commands) {
         val includedName = TexifyUtil.getIncludedFile(command) ?: continue
         val declaredIn = command.containingFile
-        val referenced = TexifyUtil.getFileRelativeTo(declaredIn, includedName) ?: continue
+        val referenced = TexifyUtil.getFileRelativeTo(declaredIn, includedName, null) ?: continue
 
         val inclusionSet = inclusions[declaredIn] ?: HashSet()
         inclusionSet.add(referenced)
@@ -127,13 +127,13 @@ fun PsiFile.isRoot(): Boolean {
         return false
     }
 
-    return commandsInFile().filter { it.name.equals("\\documentclass") }.any()
+    return commandsInFile().filter { it.commandToken.text == "\\documentclass" }.any()
 }
 
 /**
  * @see [TexifyUtil.getFileRelativeTo]
  */
-fun PsiFile.findRelativeFile(filePath: String) = TexifyUtil.getFileRelativeTo(this, filePath)
+fun PsiFile.findRelativeFile(filePath: String, extensions: Set<String>? = null) = TexifyUtil.getFileRelativeTo(this, filePath, extensions)
 
 /**
  * Looks for all file inclusions in a given file.
